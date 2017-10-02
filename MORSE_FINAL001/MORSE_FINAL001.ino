@@ -3,19 +3,16 @@
  */
  
 #include <Adafruit_NeoPixel.h>
-#include <SoftwareSerial.h>
-SoftwareSerial mySerial(3, 2); // pin 2 = TX, pin 3 = RX (unused)
-SoftwareSerial sendSerial(5, 4); // pin 2 = TX, pin 5 = RX (unused)
 
-#define PIXEL_PIN 6
+#define PIXEL_PIN 1
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(107, PIXEL_PIN, NEO_RGB + NEO_KHZ400);
 
-const long UNIT_TIME = 120; // dit duration in milliseconds
+const long UNIT_TIME = 120; // dit duration in milliseconds4
 
-const int morseKeyPin = 8;
-const int LED_PIN = 13; // lokalt visuelt feedback
-const int WORD_SIZE = 6;
-const int ALPHABET_SIZE = 107;
+const int morseKeyPin = 0;
+// const int LED_PIN = 1; // lokalt visuelt feedback
+const int WORD_SIZE = 1;
+const int ALPHABET_SIZE = 46;
 int wait = 10;
 int words = 0;
 bool allow = true;
@@ -85,23 +82,15 @@ int numArrar2[]={10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,76,
 void setup()
 {
   pinMode(morseKeyPin, INPUT_PULLUP);
-  pinMode(LED_PIN, OUTPUT);
+//  pinMode(LED_PIN, OUTPUT);
 
   prevtime = millis();
  
   Serial.begin(9600); // debug skal væk
-  mySerial.begin(9600); // set up serial port for 9600 baud
-  sendSerial.begin(9600); // set up serial port for 9600 baud
-  delay(600); // wait for display to boot up
-
   //
   strip.begin();
   strip.show(); // Initialize all pixels to 'off'
-    
- 
 }
-
-
 
 void emitLetter() {
 
@@ -112,15 +101,13 @@ void emitLetter() {
   }
   dits[i] = '\0';
 
-
   String stringOne = dits;
    
   for (int j = 0; j < ALPHABET_SIZE; j++) {
- 
+    
     if (stringOne == letters[2 * j]) {
  
        Serial.println(letters[2 * j + 1]);
-        
        
        message[curSentenceIndex]= letters[2 * j + 1 ];
        
@@ -129,9 +116,11 @@ void emitLetter() {
     
 
   }
+  
   for (int j = 0; j < WORD_SIZE; j++) {
     Serial.println(message[i]);
-    }
+  }
+  
   i = 0;
   if (words >= WORD_SIZE) {
     words = 0;
@@ -146,44 +135,28 @@ void emitLetter() {
 }
  
 void sendMorseLeds() {
-  
- 
- 
-
-  for (int i = 0; i < 80+2; i++) {
-    strip.setPixelColor(numArrar1[i], strip.Color(30, 0, 0));
+  for (int i = 0; i < 107; i++) {
+    strip.setPixelColor(i, strip.Color(30, 0, 0));
     strip.show();
     delay(wait*2);
-    strip.setPixelColor(numArrar1[i-2], strip.Color(0, 0, 0));
+    strip.setPixelColor(i-2, strip.Color(0, 0, 0));
     strip.show();
     delay(wait);
-    
   }
   
-  
-  for(int i =0;i<WORD_SIZE;i++){
-      
-      Serial.println(message[i]);
+  for(int i =0;i<WORD_SIZE;i++){ 
+     Serial.println(message[i]);
      delay(wait);
   } 
   
   delay(3000);
-   
-   
   
   firstTime=true;
   words=0;
   allow=true;
-  
-  
-
-
-
 }
 
-void loop() {
-
-   
+void loop() {   
   int reversed = 0;
   if (digitalRead(morseKeyPin)) {
     reversed = 0;
@@ -192,7 +165,9 @@ void loop() {
   }
   int state = reversed;
   
-  digitalWrite(LED_PIN, state ? HIGH : LOW); // debug
+  // digitalWrite(LED_PIN, state ? HIGH : LOW); // debug
+
+  // Serial.print(state ? "1" : "0");
   
   unsigned long t = millis();
   unsigned long len = t - prevtime;
@@ -206,21 +181,21 @@ void loop() {
         if (i < DITSLEN - 1) {
           dits[i++] = '.';
         
-          Serial.println(".");
+          Serial.print(".");
         }
       } else {
         // dah
         if (i < DITSLEN - 1) {
           dits[i++] = '-';
         
-        Serial.println("-");
+        Serial.print("-");
         }
       }
     } else {
       if (len < UNIT_TIME * 2) {
         // intra-letter gap
       } else if (len < UNIT_TIME * 5.33) {
-        // gap between letters
+        // gap between letters  
         emitLetter();
       }
     }
@@ -231,7 +206,7 @@ void loop() {
     if (!prevstate && (i > 0) && (len >= UNIT_TIME * 5.33)) {
       // gap between words
      
-       Serial.println(" ");
+       // Serial.print(" ");
     }
   }
   
