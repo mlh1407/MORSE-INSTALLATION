@@ -1,6 +1,7 @@
 PFont zigBlack;
 char letter;
-String words = "---...";
+// String words = "---...";
+String words = "";
 String[] myArray = new String[16];
  
 int fontSize = 50;
@@ -12,14 +13,15 @@ int startTime = 0;
 int timeout = 60000; // hvor længe skal vi vente før vi nulstiller pt et minut
 
 void setup() {
-  // size(800, 600);
-    fullScreen(); // use this later
-    screenWidth = displayWidth-fontSize;
-    screenHeight= displayHeight-fontSize;
+  // size(400, 800);
+  fullScreen(); // use this later
+  screenWidth = displayWidth-2*fontSize;
+  screenHeight= displayHeight-2*fontSize;
     
   // Create the font
      
-  zigBlack = createFont("Chunkfive Ex", fontSize);
+  // zigBlack = createFont("Chunkfive Ex", fontSize);
+  zigBlack = createFont("Ubuntu Mono", fontSize);  
   textFont(zigBlack);
   //fill(0);
   for(int y = 0; y<myArray.length; y++){
@@ -57,15 +59,7 @@ void keyTyped() {
        words="";
        for(int y = 0; y<myArray.length-1; y++){
           myArray[y]=myArray[y+1];
-       }
-       
-       
-        
-     
-      
-      
-     
-      
+       }      
     }
    
     // Write the letter to the console
