@@ -1,0 +1,55 @@
+//19 47 14  // vi tester med 30
+
+// fifo kan være 0 eller 1
+int fifo[]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+PFont zigBlack;
+char letter;
+// String words = "---...";
+String words;
+ 
+ 
+int fontSize = 50;
+ 
+void setup() {
+    size(800, 600);
+    for(int i = 0; i<fifo.length;i++){
+      
+    }
+  
+   
+  zigBlack = createFont("Ubuntu Mono", fontSize);  
+  textFont(zigBlack);
+  
+   
+  
+}
+
+void draw() {
+   background(0); // Set background to black
+   textSize(50);
+   String le = "";
+   for(int i = 0; i<fifo.length;i++){
+     switch(fifo[i]){
+        case 0 :
+        le=" ";
+        break;
+        case 1 :
+        le="-";
+        break;
+        case 2 :
+        le=".";
+        break;
+      }
+   text(le , i*50+50, 50, 700, 55);   
+   }
+}
+ 
+void keyTyped() {
+  // The variable "key" always contains the value 
+  // of the most recent key pressed.
+  if (key == ' ' || key == '.' || key == '-') {
+    letter = key;
+    words = words + key;
+   }
+    
+}
