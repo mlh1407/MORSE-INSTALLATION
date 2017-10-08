@@ -111,7 +111,9 @@ void emitLetter() {
 
 
   String stringOne = dits;
-  Serial.println("YAAAAAAY "+encodeMorseCode(stringOne)+" YAAAAAAY");
+  String bogstaver = encodeMorseCode(stringOne);
+  Serial.println(bogstaver);
+  
   for (int j = 0; j < ALPHABET_SIZE; j++) {
 
     if (stringOne == letters[2 * j]) {
@@ -171,6 +173,7 @@ void loop() {
       } else if (len < UNIT_TIME * 5.33) {
         // gap between letters
         emitLetter();
+        
       }
     }
 
