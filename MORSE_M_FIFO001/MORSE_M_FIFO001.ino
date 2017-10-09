@@ -10,46 +10,8 @@ int fifoTemp[fifolength]; // 80
 int fifoBuffer = 0;
 long previousMillis = 0;
 long interval = 500;           // interval at which to blink (milliseconds)
-String letters[] = {
-  ".-", "A",
-  "-...", "B",
-  "-.-.", "C",
-  "-..", "D",
-  ".", "E",
-  "..-.", "F",
-  "--.", "G",
-  "....", "H",
-  "..", "I",
-  ".---", "J",
-  "-.-", "K",
-  ".-..", "L",
-  "--", "M",
-  "-.", "N",
-  "---", "O",
-  ".--.", "P",
-  "--.-", "Q",
-  ".-.", "R",
-  "...", "S",
-  "-", "T",
-  "..-", "U",
-  "...-", "V",
-  ".--", "W",
-  "-..-", "X",
-  "-.--", "Y",
-  "--..", "Z",
-  ".----", "1",
-  "..---", "2",
-  "...--", "3",
-  "....-", "4",
-  ".....", "5",
-  "-....", "6",
-  "--...", "7",
-  "---..", "8",
-  "----.", "9",
-  "-----", "0"
-};
-const int ALPHABET_SIZE = 36;
-
+ 
+ 
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(107, PIXEL_PIN, NEO_RGB + NEO_KHZ400);
 
@@ -108,20 +70,10 @@ void emitLetter() {
 
 
   dits[i] = '\0';
-
-
+  
   String stringOne = dits;
   String bogstaver = encodeMorseCode(stringOne);
   Serial.println(bogstaver);
-  
-  for (int j = 0; j < ALPHABET_SIZE; j++) {
-
-    if (stringOne == letters[2 * j]) {
-
-      Serial.println(letters[2 * j + 1]);
-
-    }
-  }
   i = 0;
   fifififo();
 }
