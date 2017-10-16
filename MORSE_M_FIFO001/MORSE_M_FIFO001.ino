@@ -184,8 +184,6 @@ void fifififo() {
       strip.setPixelColor(i, strip.Color(0, 0, 0));
       strip.show();
     }
-
-
   }
 }
 
