@@ -9,15 +9,17 @@ int fifo[fifolength]; // 80
 int fifoTemp[fifolength]; // 80
 int fifoBuffer = 0;
 long previousMillis = 0;
-long interval = 500;           // interval at which to blink (milliseconds)
+long interval = 30;           // interval at which to blink (milliseconds)
+ 
  
  
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(107, PIXEL_PIN, NEO_RGB + NEO_KHZ400);
 
-const long UNIT_TIME = 120; // dit duration in milliseconds
+// const long UNIT_TIME = 120; // dit duration in milliseconds
+const long UNIT_TIME = 60; // dit duration in milliseconds
 
-const int morseKeyPin = 0;
+const int morseKeyPin = 2;
 
 
 
@@ -34,8 +36,8 @@ const int DITSLEN = 10;
 char dits[DITSLEN];
 int i = 0;
 bool firstTime = true;
-
-
+int ledPin = 13;
+bool ledState =false;
 void setup()
 {
   pinMode(morseKeyPin, INPUT_PULLUP);
@@ -62,6 +64,7 @@ void setup()
     delay(wait);
 
   }
+  pinMode(ledPin, OUTPUT); 
 }
 
 
@@ -80,11 +83,21 @@ void emitLetter() {
 
 void loop() {
 
+ 
+
+  
   // hvis der er fifo indhold så kør denne ellers ikke / hvordan ?
   unsigned long currentMillis = millis();
   if (currentMillis - previousMillis > interval) {
     previousMillis = currentMillis;
     fifififo();
+
+    if (ledState == LOW)
+      ledState = HIGH;
+    else
+      ledState = LOW;
+
+    digitalWrite(ledPin, ledState);
   }
   //
   int reversed = 0;
@@ -108,7 +121,7 @@ void loop() {
         if (i < DITSLEN - 1) {
           dits[i++] = '.' ;
           fifoBuffer=1;
-          Serial.println('.');
+           Serial.println('.');
         }
       } else {
         // dah
@@ -135,7 +148,7 @@ void loop() {
     if (!prevstate && (i > 0) && (len >= UNIT_TIME * 5.33)) {
       // gap between words
 
-      Serial.println(' ');
+     // Serial.println(' ');
     }
   }
 
@@ -170,10 +183,10 @@ void fifififo() {
     fifoBuffer = 0;
   }
   for (int i = 0; i < fifolength - 1; i++) {
-    Serial.print(fifo[i]);
+    //Serial.print(fifo[i]);
 
   }
-  Serial.println(fifo[fifolength - 1]);
+  //Serial.println(fifo[fifolength - 1]);
 
   for (int i = 0; i < fifolength; i++) {
 
