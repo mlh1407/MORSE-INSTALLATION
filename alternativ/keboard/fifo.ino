@@ -70,10 +70,10 @@ void fifififo() {
      
      fifoBuffer=0;
   }
-  for (int i = 0; i < fifolength-1; i++) {
-    Serial.print(fifo[i]);
-  } 
-   Serial.println(fifo[fifolength-1]);
+//  for (int i = 0; i < fifolength-1; i++) {
+//    Serial.print(fifo[i]);
+//  } 
+//   Serial.println(fifo[fifolength-1]);
 
 //   for (int i = 0; i < fifolength; i++) {
 //
