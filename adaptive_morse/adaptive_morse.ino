@@ -4,13 +4,18 @@
 // Connect led to pin 13 on the Arduino and GND.
 
 #define BUTTON 2  // Button at pin 2 and GND
-#define LED   13  // LED at pin 13 and GND 
+#define LED    13  // LED at pin 13 and GND 
+#define PING   3  // Pin to Ping the other teensy
+
+#define PING_DURATION 100
 
 void setup() 
 {
   pinMode(BUTTON, INPUT_PULLUP);
   pinMode(LED, OUTPUT);
+  pinMode(PING, OUTPUT);
   Serial.begin(115200);
+  Keyboard.begin();
 }
 
 float DashDuration = 200.0;
@@ -18,6 +23,7 @@ boolean PrevSignal = false;
 long tStartSign, tStartPause;
 boolean S;
 String letter = "";
+boolean sendPing = false;
 
 void loop() 
 {
@@ -50,6 +56,8 @@ void loop()
   }
 
   PrevSignal = S; // Saves the new button state
+
+  send_led_ping();
 }
 
 void Decoder(long start_time) 
@@ -130,6 +138,8 @@ void DecoderLetter()
     { // If the string of symbols has been found
       // Print((char)('A' + i));
       Serial.print((char)('A' + i)); // Print the letter as a char
+      Keyboard.write((char)('A' + i));
+      sendPing = true;
       break; // End while loop
     }
     i++; // Iterate through the array
@@ -138,16 +148,36 @@ void DecoderLetter()
   { // If the array has reached the end, print the symbols
     // Print(letter);
     Serial.print(letter);
+    Keyboard.print(letter);
+    sendPing = true;
   }
+
   letter = "";
 }
 
 void send_led_ping()
 {
+  static unsigned long time_start = 0;
+  unsigned long current_millis = millis();
+  
+  if (sendPing)
+  {
+    digitalWrite(PING, LOW);
+    time_start = millis();
+    // Serial.print((char)('0'));
+  }
+  else 
+  {
+    digitalWrite(PING, HIGH);
+  }
+
+  if ((current_millis - time_start) >= PING_DURATION)
+  { // 
+    sendPing = false;
+    time_start = 0;
+    // Serial.print((char)('\n'));
+  }
+
   return;
 }
 
-void send_keyboard_key(char key)
-{
-  return;
-}
