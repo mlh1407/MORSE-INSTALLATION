@@ -1,0 +1,20 @@
+Dette er et dokument, der beskriver opstillingen af morseapperatet med to teensy LC.
+Arduino-sketches:   adaptive_morse
+                    fifo_lys_slave
+                    
+Der er to teensy LC oven på hinanden. Den øverste er selve morse-delen, hvor den nederste står for kommunikation med neopixels-LED'erne.
+
+adaptive_morse pin-description:
+
+---Navn---|--PIN--|--Retning--
+BUTTON    |    2  |   IN
+LED       |   13  |  OUT
+LED_FRONT |    3  |  OUT
+PING      |    0  |  OUT
+
+fifo_lys_slave pin-description:
+
+---Navn---|--PIN--|--Retning--
+PIXEL_PIN |   17  |  OUT
+LED       |   13  |  OUT
+PING      |    0  |   IN
