@@ -36,40 +36,42 @@
 //    
 //  }
 //}
-void fifififo() {
-
+void fifififo() 
+{
   for (int i = 0; i < fifolength; i++)
   {
     lastFifo[i] = fifo[i]; 
   }
 
-  if(fifoBuffer==1){ // er der en rotte i fælden ?
-    fifoTemp[0]=fifoBuffer;
-    
-     for (int i = 0; i < fifolength-1; i++) {
-       fifoTemp[i+1]=fifo[i]; //
-       
-     }
-     for (int i = 0; i < fifolength; i++) {
-        
-       fifo[i]=fifoTemp[i];
-     }
-     
-     fifoBuffer=0;
-  }else{ // hvis ikke der er en rotte i fælden så shifter vi med space
-    fifoTemp[0]=fifoBuffer;
-    
-     for (int i = 0; i < fifolength-1; i++) {
-       fifoTemp[i+1]=fifo[i]; //
-       
-     }
-     for (int i = 0; i < fifolength; i++) {
-        
-       fifo[i]=fifoTemp[i];
-     }
-     
-     fifoBuffer=0;
+  fifoTemp[0]=fifoBuffer;
+  
+  for (int i = 0; i < fifolength-1; i++) 
+  {
+    fifoTemp[i + 1] = fifo[i]; //      
   }
+
+  for (int i = 0; i < fifolength; i++) 
+  {    
+    fifo[i] = fifoTemp[i];
+  }
+    
+  fifoBuffer=0;
+}
+  /*
+  *
+  * fifotemp[0] = fifoBuffer;
+  * 
+  * for (int i = 0; i < fifolength - 1; i++)
+  * {
+  *   fifotemp[i + 1] = fifo[i];
+  * }
+  * 
+  * for ()
+  * 
+  * 
+  * */
+
+
 //  for (int i = 0; i < fifolength-1; i++) {
 //    Serial.print(fifo[i]);
 //  } 
@@ -85,6 +87,5 @@ void fifififo() {
 //      strip.show();
 //    }
 //  }
-}
 
 

@@ -3,26 +3,29 @@
 // Connect button to pin 0 on the Arduino and GND.
 // Connect led to pin 13 on the Arduino and GND.
 
-#define BUTTON 2  // Button at pin 2 and GND
-#define LED    13  // LED at pin 13 and GND 
-#define PING   3  // Pin to Ping the other teensy
+#define BUTTON      2  // Button at pin 2 and GND
+#define LED        13  // LED at pin 13 and GND 
+#define LED_FRONT   3  // Pin for front facing LED. User feedback
+#define PING        0  // Pin to Ping the other teensy
 
 #define PING_DURATION 100
+// 
 
 void setup() 
 {
   pinMode(BUTTON, INPUT_PULLUP);
   pinMode(LED, OUTPUT);
+  pinMode(LED_FRONT, OUTPUT);
   pinMode(PING, OUTPUT);
   Serial.begin(115200);
   Keyboard.begin();
 }
-
+// 
 float DashDuration = 200.0;
 boolean PrevSignal = false;
 long tStartSign, tStartPause;
 boolean S;
-String letter = "";
+String letter = ""; //
 boolean sendPing = false;
 
 void loop() 
@@ -38,6 +41,7 @@ void loop()
       DecoderPause(tStartPause); // Determine what the pause meant
     }
     digitalWrite(LED, HIGH); // Turn LED on
+    digitalWrite(LED_FRONT, HIGH); // Turn LED on
   }
   else 
   { // If button is not pushed
@@ -48,6 +52,7 @@ void loop()
       Decoder(tStartSign); // Determine what the signal meant
     }
     digitalWrite(LED, LOW); // Turn LED off
+    digitalWrite(LED_FRONT, LOW); // Turn LED off
   }
 
   if (abs(millis() - tStartPause) > DashDuration * 10) 
@@ -162,13 +167,13 @@ void send_led_ping()
   
   if (sendPing)
   {
-    digitalWrite(PING, LOW);
+    digitalWrite(PING, HIGH);
     time_start = millis();
     // Serial.print((char)('0'));
   }
   else 
   {
-    digitalWrite(PING, HIGH);
+    digitalWrite(PING, LOW);
   }
 
   if ((current_millis - time_start) >= PING_DURATION)
